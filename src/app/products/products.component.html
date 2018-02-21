@@ -1,3 +1,36 @@
 <p>
   products works!
 </p>
+<table class="table table-dark">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">NAME</th>
+      <th scope="col">DESCRIPTION</th>
+      <th scope="col">VALUE</th>
+      <th scope="col">PRICE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr app-product *ngFor="let product of products" 
+                      [id]="product.id"
+                      [name]="product.name"
+                      [description]="product.description"
+                      [value]="product.value"
+                      [price]="product.price">
+          Product Didn't Load!
+    </tr>
+    <!-- <app-product *ngFor="let product of products" 
+            [id]="product.id"
+            [name]="product.name"
+            [description]="product.description"
+            [value]="product.value"
+            [price]="product.price">
+          Product Didn't Load!
+    </app-product> -->
+  </tbody>
+</table>
+
+<button type="button" class="btn btn-primary">
+    Test
+</button>
