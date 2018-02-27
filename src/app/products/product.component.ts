@@ -1,4 +1,8 @@
 import { Component, Input } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppState } from '../models/app-state';
+
+import * as productActions from "./../actions/product.actions";
 
 @Component({
   selector: "[app-product]",
@@ -13,5 +17,9 @@ export class ProductComponent {
   @Input() value: string;
   @Input() price: number;
 
-  constructor() { }
+  constructor(private store: Store<AppState>) { }
+
+  deleteProduct(productId: number){
+    this.store.dispatch(new productActions.DeleteProductActions(this.id));
+  }
 }

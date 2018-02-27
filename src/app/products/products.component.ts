@@ -1,28 +1,37 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { NgForOf } from '@angular/common';
 import { ProductsService } from './products.service';
 import { IProduct } from './product';
+import { Observable } from 'rxjs/Observable';
+import { Store } from '@ngrx/store';
+import { AppState } from '../models/app-state';
+
+import * as productActions from "./../actions/product.actions";
 
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.css'],
-  providers: [ProductsService]
+  providers: [ProductsService],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class ProductsComponent implements OnInit {
-  products: IProduct[];
+  products$: Observable<IProduct[]>;
 
-  constructor(private productService: ProductsService) { }
+  constructor(private store: Store<AppState>) {
+    this.products$ = this.store.select(state => state.products);
+   }
 
-  ngOnInit() {
-    
-     this.productService.getJSON()
-                        .subscribe(data => {
-                                    this.products = data
-                                  }, error => {
-                                    console.log(error)
-                                  });
+  ngOnInit() {   
+     this.getProducts();
   }
 
+  getProducts(){
+    this.store.dispatch(new productActions.LoadProductsActions());
+  }
+
+  deleteProduct(productId: number){
+    this.store.dispatch(new productActions.DeleteProductActions(productId));
+  }
 }
