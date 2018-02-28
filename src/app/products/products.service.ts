@@ -29,9 +29,7 @@ export class ProductsService {
 
 
   deleteProduct(productId: number): Observable<IProduct>{
-    var d = this.getJSON().subscribe(data => data.filter(product => product.id === productId),
-                                     error => console.log(error));
-
-    return d[0];
+    var d = this.getJSON().map(data => d = data.filter(product => product.id === productId));
+    return d;
   }
 }

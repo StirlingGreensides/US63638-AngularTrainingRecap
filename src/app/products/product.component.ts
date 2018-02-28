@@ -20,7 +20,6 @@ export class ProductComponent {
   constructor(private store: Store<AppState>) { }
 
   deleteProduct(productId: number){
-
     this.store.dispatch(new productActions.DeleteProductActions(this.id));
   }
 }

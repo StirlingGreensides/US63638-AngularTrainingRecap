@@ -20,6 +20,6 @@ export class ProductEffects {
 
     @Effect() deleteProduct$ = this.action$.ofType(productActions.DELETE_PRODUCT)
                                            .switchMap((action: productActions.DeleteProductActions) => this.productService.deleteProduct(action.payload)
-                                                .map(product => (new productActions.DeleteProductSuccessActions(product.id))));
+                                                .map(product =>  new productActions.DeleteProductSuccessActions(product[0].id)));
 
 }
