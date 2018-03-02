@@ -14,6 +14,7 @@ import { ProductEffects } from './effects/product.effects';
 import { WelcomeComponent } from './home/welcome.component';
 import { PageNotFoundComponent } from './page-not-found.component';
 import { AppRoutingModule } from './app-router.module';
+import { AddProductComponent } from './products/add-product/add-product.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { AppRoutingModule } from './app-router.module';
     ProductsComponent,
     ProductComponent,
     WelcomeComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    AddProductComponent
   ],
   imports: [
     BrowserModule,

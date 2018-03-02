@@ -28,10 +28,10 @@ export class ProductsComponent implements OnInit {
   }
 
   getProducts(){
-    this.store.dispatch(new productActions.LoadProductsActions());
-  }
-
-  addProduct(){
-    this.store.dispatch(new productActions.AddProductActions());
+    this.products$.subscribe(data => {
+      if(data.length == 0){
+        this.store.dispatch(new productActions.LoadProductsActions());
+      }
+    });
   }
 }
