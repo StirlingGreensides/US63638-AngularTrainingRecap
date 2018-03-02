@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
+import { Store } from '@ngrx/store';
+import { AppState } from '../models/app-state';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/observable/from';
@@ -13,7 +15,8 @@ export class ProductsService {
   //private productsUrl = 'https://jsonplaceholder.typicode.com/posts';
   private productsUrl = 'assets/json/Products.json';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+              private store: Store<AppState>) { }
 
   getJSON(): Observable<IProduct[]> {
     return this.http.get(this.productsUrl)
@@ -34,23 +37,11 @@ export class ProductsService {
   }
 
   addProduct(): Observable<IProduct>{
-    // let product: Observable<IProduct>;
-    // product = Observable.create(function(observer) {
-    //   let p = {
-    //     id: 5,
-    //     name: "TestNewProduct",
-    //     description: "Add New Product",
-    //     value: "Hope this works",
-    //     price: 99.99
-    //   }
-
-    //   return () => p;
-    // });
-
-    //return product.map(d => console.log(d));
+    let id: number; 
+    this.store.select(data => data.products).subscribe(p => id = p.length + 1)
 
     let p = [{
-          id: 5,
+          id: id,
           name: "TestNewProduct",
           description: "Add New Product",
           value: "Hope this works",
