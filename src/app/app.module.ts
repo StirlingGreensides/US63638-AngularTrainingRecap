@@ -11,19 +11,25 @@ import { ProductsService } from './products/products.service';
 import { ProductComponent } from './products/product.component';
 import { productReducer } from './reducers/product.reducer';
 import { ProductEffects } from './effects/product.effects';
+import { WelcomeComponent } from './home/welcome.component';
+import { PageNotFoundComponent } from './page-not-found.component';
+import { AppRoutingModule } from './app-router.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     ProductsComponent,
-    ProductComponent
+    ProductComponent,
+    WelcomeComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     StoreModule.forRoot({products: productReducer}),
     EffectsModule.forRoot([ProductEffects]),
-    StoreDevtoolsModule.instrument()
+    StoreDevtoolsModule.instrument(),
+    AppRoutingModule
   ],
   providers: [ProductsService],
   bootstrap: [AppComponent]
