@@ -4,6 +4,7 @@ import { Action } from '../actions/product.actions';
 import { Effect, Actions } from "@ngrx/effects";
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/do';
 
 import * as productActions from "./../actions/product.actions";
 
@@ -22,4 +23,7 @@ export class ProductEffects {
                                            .switchMap((action: productActions.DeleteProductActions) => this.productService.deleteProduct(action.payload)
                                                 .map(product =>  new productActions.DeleteProductSuccessActions(product[0].id)));
 
+     @Effect() addProduct$ = this.action$.ofType(productActions.ADD_PRODUCT)
+                                           .switchMap(() => this.productService.addProduct()
+                                                .map(product =>  new productActions.AddProductSuccessActions(product)));
 }

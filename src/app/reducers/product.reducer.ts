@@ -9,6 +9,9 @@ export function productReducer(state = [], action: productActions.Action){
             var newState = state.filter(product => product.id !== action.payload);
             return newState;
         }
+        case productActions.ADD_PRODUCT_SUCCESS:{
+            return [...state, action.payload];
+        }
         default:{
             return state;
         }

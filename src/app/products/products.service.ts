@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import 'rxjs/observable/from';
 
 import { IProduct } from './product';
 
@@ -27,9 +28,36 @@ export class ProductsService {
     return this.getJSON();
   }
 
-
   deleteProduct(productId: number): Observable<IProduct>{
     var d = this.getJSON().map(data => d = data.filter(product => product.id === productId));
     return d;
+  }
+
+  addProduct(): Observable<IProduct>{
+    // let product: Observable<IProduct>;
+    // product = Observable.create(function(observer) {
+    //   let p = {
+    //     id: 5,
+    //     name: "TestNewProduct",
+    //     description: "Add New Product",
+    //     value: "Hope this works",
+    //     price: 99.99
+    //   }
+
+    //   return () => p;
+    // });
+
+    //return product.map(d => console.log(d));
+
+    let p = [{
+          id: 5,
+          name: "TestNewProduct",
+          description: "Add New Product",
+          value: "Hope this works",
+          price: 99.99
+        }];
+
+    let source = Observable.from(p);
+    return source;
   }
 }

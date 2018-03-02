@@ -31,7 +31,7 @@ export class ProductsComponent implements OnInit {
     this.store.dispatch(new productActions.LoadProductsActions());
   }
 
-  deleteProduct(productId: number){
-    this.store.dispatch(new productActions.DeleteProductActions(productId));
+  addProduct(){
+    this.store.dispatch(new productActions.AddProductActions());
   }
 }
