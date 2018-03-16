@@ -1,0 +1,287 @@
+/* Comments in this block are output to the compiled .css.*/
+// Content in this block is not output to the compiled .css!
+@import './_variables.scss';
+@import './_mixins.scss';
+  
+//==============
+//CLASSES
+//==============
+//2.1 Variables and Mixins
+body {
+    background-color: $colb;
+    font-size: $base-font-size;
+    margin: 0 auto;
+    width: 1000px;
+}
+
+h1{
+    color: $primary-brand-color;
+}
+.ThisSass{ 
+    color: $col; 
+}
+
+.lead-text{
+    color: $primary-brand-color;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.primary-button{
+    @include standard-button($important-action-color);
+    @include border-radius-vendor(20px);
+}
+
+.secondary-button{
+    @include standard-button($secondary-action-color);
+}
+
+
+//2.2 Nesting
+ul.contacts{
+    background-color: green;
+    list-style-type: none;
+    padding: 0;
+
+    li{
+        .article1{
+            border: solid 5px;
+            background-color: #ff5e00;
+
+            margin-bottom: 10px;
+            padding: 10px;
+
+            header{
+                font-style: italic;
+            }
+
+            p{
+                color: white;
+            }
+        }
+    }
+}
+
+
+//2.7 Extending classes and including functions.
+.button{
+    float: left;
+    color: white;
+    text-align: center;
+    font-size: 48pt;
+    width: 200px;
+    height: 100px;
+    line-height: 100px;
+    @include border-radius-vendor(10px);
+}
+
+.yes{
+    @extend .button;
+    background-color: #00ff00;
+}
+
+.no{
+    @extend .button;
+    background-color: #ff0000;
+}
+
+.cancel{
+    @extend .button;
+    background-color: #cec0b8;
+}
+
+
+//3.4 Lists of Values
+// Defining Lists:
+$space-delimited-list: 10px 20px 30px 40px;
+$another-space-delimited-list: 50px 60px 70px 80px;
+$comma-separated-list: red, green, black;
+
+// List Functions:
+@debug New Line;
+@debug length is length($comma-separated-list);
+@debug index 2 is nth($comma-separated-list, 2);
+
+$joined: join($space-delimited-list, $another-space-delimited-list);
+@debug joined list $joined;
+
+$comma-separated-list: append($comma-separated-list, blue);
+@debug appended list $comma-separated-list;
+
+@debug index of blue index($comma-separated-list, blue);
+
+
+
+//3.2 Mathematics
+$total-pixel-width: 1000px - 200px;
+
+$number-of-columns: 2 * 2 - 1;
+
+$col-width: $total-pixel-width / $number-of-columns;
+
+@debug total width $total-pixel-width;
+@debug number of columns $number-of-columns;
+@debug column width $col-width;
+
+.Math-Container{
+    width: $total-pixel-width;
+}
+
+.column {
+    width: $col-width;
+    float: left;
+    height: (400px / 2);
+}
+
+.col1{
+    @extend .column;
+    //background-color: #ffa752;
+    background-color: nth($comma-separated-list, 1);
+}
+
+.col2{
+    @extend .column;
+    //background-color: #52ff90;
+    background-color: nth($comma-separated-list, 2);
+}
+
+.col3{
+    @extend .column;
+    //background-color: #fd52ff;
+    background-color: nth($comma-separated-list, 3);
+}
+
+
+//3.3 Parent Selectors &
+nav.related li{
+    list-style-type: none;
+
+    a {
+        color: red;
+
+        &:visited{
+            color: purple;
+        }
+
+        &:hover{
+            color: orange;
+            font-size: 30pt;
+        }
+
+        &:active{
+            color: green;
+            font-size: 30pt;
+        }
+
+        body.logged-in &{
+            font-style: italic;
+        }
+    }
+}
+
+
+//3.5 Using Mixins with the @content
+@mixin logged-in-only {
+    body.logged-in {
+        @content;
+    }
+}
+
+@include logged-in-only {
+    // Here we're passing some content that the mixin can use
+    .col1{
+        background-color: pink;
+    }
+}
+
+$small-break-point: 300px;
+$medium-break-point: 500px;
+
+@mixin screen-media($width){
+    @media screen and (max-width: $width){
+        @content;
+    }
+}
+
+article {
+    width: 300px;
+    float: left;
+    background-color: orange;
+}
+
+aside {
+    width: 300px;
+    float: left;
+    background-color: pink;
+
+    @include screen-media($small-break-point) {
+        display: none;
+        visibility: collapse;
+    }
+
+    @include screen-media($medium-break-point) {
+        background-color: green;
+    }
+}
+
+//3.6 Passing Variable Number of Arguments to Mixins 
+$tile-size: 250px;
+
+@mixin shadow($shadow...){
+    box-shadow: $shadow;
+}
+
+.tile {
+    width: $tile-size;
+    height: $tile-size;
+    margin: 50px;
+}
+
+#tile1{
+    @extend .tile;
+    background-color: red;
+
+    //pass a single value
+    @include shadow(10px 10px 5px black);
+}
+
+#tile2{
+    @extend .tile;
+    background-color: violet;
+
+    //pass a list of comma seperated values
+    @include shadow(10px 10px 5px black, -10px -10px 10px 5px purple);
+}
+
+//3.7 Color Functions
+//complete list of functions http://bit.ly/pssasscolors
+
+$root-color: #4c00ff;
+
+$another-color: #ff6a00;
+
+body{
+    background-color: lighten($root-color, 45%);
+}
+
+h1{
+    color: adjust-hue($root-color, 70deg);
+}
+
+h2{
+    color: mix($root-color, $another-color);
+}
+
+.leadText{
+    color: saturate($root-color, 50%);
+}
+
+.detailText{
+    color: darken($root-color, 30%);
+}
+
+//3.8 Performing Conditional IF Logic
+
+//==============
+//CLASSES END
+//==============

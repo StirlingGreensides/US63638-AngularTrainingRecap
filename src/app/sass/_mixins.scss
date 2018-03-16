@@ -1,0 +1,21 @@
+//==============
+//MIXINS
+//==============
+//2.1 Variables and Mixins
+@mixin standard-button($button-bg){
+    color: $button-text-color;
+    background-color: $button-bg;
+    font-size: $buttonFontSize;
+    width: $button-width;
+    padding: $button-padding;
+}
+
+@mixin border-radius-vendor($radius){
+    -webkit-border-radius: $radius;
+       -moz-border-radius: $radius;
+        -ms-border-radius: $radius;
+            border-radius: $radius;
+}
+//==============
+//MIXINS END
+//==============

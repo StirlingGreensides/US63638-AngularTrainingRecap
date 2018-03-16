@@ -11,6 +11,7 @@ import { ProductsService } from './products/products.service';
 import { ProductComponent } from './products/product.component';
 import { productReducer } from './reducers/product.reducer';
 import { ProductEffects } from './effects/product.effects';
+import { SassComponent } from './sass/sass.component';
 import { WelcomeComponent } from './home/welcome.component';
 import { PageNotFoundComponent } from './page-not-found.component';
 import { AppRoutingModule } from './app-router.module';
@@ -21,6 +22,7 @@ import { AddProductComponent } from './products/add-product/add-product.componen
     AppComponent,
     ProductsComponent,
     ProductComponent,
+    SassComponent,
     WelcomeComponent,
     PageNotFoundComponent,
     AddProductComponent
