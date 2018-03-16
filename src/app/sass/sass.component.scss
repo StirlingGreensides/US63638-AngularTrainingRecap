@@ -256,7 +256,7 @@ $tile-size: 250px;
 //3.7 Color Functions
 //complete list of functions http://bit.ly/pssasscolors
 
-$root-color: #ffd000;
+$root-color: #4c00ff;
 
 $another-color: #ff6a00;
 
@@ -281,7 +281,139 @@ h2{
 }
 
 //3.8 Performing Conditional IF Logic
+@mixin set-font($size){
+    @if $size < 5px {
+        font-size: 15px;
+        @warn Defaulting size to 5px;
+    }
+    @else{
+        font-size: $size;
+    }
+}
 
+body{
+    @include set-font(20pt);
+}
+
+.if{
+    h1{
+        @include set-font(0pt);
+    }
+}
+
+//3.9 Counter-Based Loop Iteration
+$tileCounte-size: 100px;
+$tileCounterRoot-color: blue;
+
+.Counter-Loops{
+    .tileCounter{
+        width: $tileCounte-size;
+        height: $tileCounte-size;
+    }
+
+    @for $i from 1 through 5{
+        @debug starting loop number $i;
+
+        // use #{} interpolation feature
+        #tileCounter#{$i}{
+            @extend .tileCounter;
+            background-color: lighten($tileCounterRoot-color, $i * 10);
+        }
+    }
+}
+
+//3.10 List-Based Loop Iterations
+$tileList-size: 100px;
+$tileList-colors: blue, green, red, orange, purple;
+
+.tileList{
+    width: $tileList-size;
+    height: $tileList-size;
+}
+
+@each $color in $tileList-colors{
+    $i: index($tileList-colors, $color);
+
+    @debug setting tile $i to $color;
+
+    #tileList#{$i}{
+        @extend .tileList;
+        background-color: $color;
+    }
+}
+
+
+//3.11 Maps of Key-Value Pairs
+$tileKeyValue-size: 100px;
+
+.tileKeyValue{
+    width: $tileKeyValue-size;
+    height: $tileKeyValue-size;
+}
+
+// define a map variable of key/value pairs.
+$team-colors: (
+    australia: #f7ad31,
+    england: #fff,
+    sweden: #ffe700,
+    japan: #435aad
+);
+
+@each $team, $color in $team-colors{
+    @debug key $team value $color;
+
+    .#{$team}{
+        @extend .tileKeyValue;
+        background-color: $color;
+    }
+}
+
+@debug _____map related functions_____ ;
+@debug Sweden color is map-get($team-colors, sweden);
+@debug All keys map-keys($team-colors);
+@debug All values map-values($team-colors);
+@debug England exists map-has-key($team-colors, england);
+@debug Spain exists map-has-key($team-colors, spain);
+
+//3.12 Creating  Non-Generating Base Selector
+$tileBaseSelector-size: 100px;
+$tileBaseSelector-colors: blue, green, red, orange, purple;
+
+//This base class is not generated in the final css.
+%tileBaseSelector{
+    width: $tileBaseSelector-size;
+    height: $tileBaseSelector-size;
+}
+
+@each $color in $tileBaseSelector-colors{
+    $i: index($tileBaseSelector-colors, $color);
+
+    @debug setting tile $i to $color;
+
+    #tileBaseSelector#{$i}{
+        @extend %tileBaseSelector;
+        background-color: $color;
+    }
+}
+
+//3.13 Nested Properties
+// div.body{
+//     font-family: 'Comic Sans MS';
+//     font-size: 50pt;
+//     font-weight: bold;
+//     font-style: italic;
+// }
+
+//instead of the above, use the below pattern
+
+div.body{
+    font: {
+        family: 'Comic Sans MS';
+        size: 50pt;
+        weight: bold;
+        style: italic;
+    }
+}
 //==============
 //CLASSES END
 //==============
