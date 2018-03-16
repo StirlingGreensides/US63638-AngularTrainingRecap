@@ -8,6 +8,7 @@
     font-size: $buttonFontSize;
     width: $button-width;
     padding: $button-padding;
+    float: left;
 }
 
 @mixin border-radius-vendor($radius){
