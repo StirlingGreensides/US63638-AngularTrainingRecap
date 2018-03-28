@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./welcome.component.css']
 })
 export class WelcomeComponent implements OnInit {
-  title = 'best fucking app in the world';
+  title = 'Angular, best fucking app in the world';
 
   constructor() { }
 

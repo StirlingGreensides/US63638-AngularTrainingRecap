@@ -16,6 +16,7 @@ import { WelcomeComponent } from './home/welcome.component';
 import { PageNotFoundComponent } from './page-not-found.component';
 import { AppRoutingModule } from './app-router.module';
 import { AddProductComponent } from './products/add-product/add-product.component';
+import { RxjsComponent } from './rxjs/rxjs.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { AddProductComponent } from './products/add-product/add-product.componen
     SassComponent,
     WelcomeComponent,
     PageNotFoundComponent,
-    AddProductComponent
+    AddProductComponent,
+    RxjsComponent
   ],
   imports: [
     BrowserModule,
@@ -38,4 +40,5 @@ import { AddProductComponent } from './products/add-product/add-product.componen
   providers: [ProductsService],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }

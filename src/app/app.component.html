@@ -4,19 +4,12 @@
   <nav class="navbar navbar-default">
     <div class="container-fluid">
       <a class="navbar-brand">{{pageTitle}}</a>
-      <ul class="nav navbar-nav">
-        <li routerLinkActive='active'>
-          <a [routerLink]='["/welcome"]'>Home</a>
-        </li>
-        <li routerLinkActive='active' [routerLinkActiveOptions]="{ exact: true }">
-          <a [routerLink]='["/products"]'>Product List</a>
-        </li>
-        <li routerLinkActive='active' [routerLinkActiveOptions]="{ exact: true }">
-          <a [routerLink]='["/sass"]'>Sass Tutorial Demo</a>
+      <ul class="nav navbar-nav" >
+        <li routerLinkActive='active' *ngFor="let link of links">
+          <a [routerLink]='[link.url]'>{{link.text}}</a>
         </li>
       </ul>
     </div>
   </nav>
-  
   <router-outlet></router-outlet>
 </div>
