@@ -19,19 +19,33 @@ export class RxjsComponent implements OnInit {
       this.htmlDataOuput += val; 
     });
 
+    let timerVal = 10;//3000;
+    log(`<h1>Observers and Observables</h1>`);
     m25();
-    log('<br/>');
+    log('<br/>', 1);
     m26();
-    log('<br/>');
+    log('<br/>', 1);
     m27();
-    log('<br/>');
+    log('<br/>', 1);
     m28();
     setTimeout(function(){
-      log('<br/>');
+      log('<br/>', 1);
       m29();
-    }, 3000);
+      setTimeout(function(){
+        log(`<h1>Working with Observables</h1>`);
+        m32()
+        log('<br/>', 1);
+        m33();
+        log('<br/>', 1);
+        m34();
+        log('<br/>', 1);
+        m35();
+        log('<br/>', 1);
 
-    console.log(this.htmlDataOuput); 
+      }, timerVal);
+    }, timerVal);
+
+
   }
 
   ngOnInit() {  }
@@ -45,9 +59,14 @@ htmlDataObservable = new Observable((obs: Observer<string>) => {
   htmlDataObserver = obs;
 });
 
-function log(value){
-  console.log(value);
-  htmlDataObserver.next(`<div> ${value} <div>`);
+function log(value, skip = 0){
+  if(skip != 1){
+    console.log(value);
+  }
+
+  if(skip != 2){
+    htmlDataObserver.next(`<div> ${value} <div>`);
+  }
 }
 
 
@@ -158,4 +177,129 @@ function m29(){
   source.subscribe(value => { log(`${title}, value: ${value}`); },
                     e => { log(`${title}, error: ${e}`); },
                     () => { log(`${title}, complete`); });
+}
+
+//module 3.2: Processing Mouse Events
+function m32(){ 
+  let title = 'Processing Mouse Events';
+  log(`<h2>${title}</h2>`);
+
+  let circle = document.getElementById('circle');
+  let source = Observable.fromEvent(document, "mousemove")
+                              .map((e: MouseEvent) => {
+                                return {
+                                  x: e.clientX,
+                                  y: e.clientY
+                                }
+                              })
+                              .filter(value => value.x < 1500)
+                              .delay(150);
+
+  function onNext(value){
+    circle.style.left = value.x + 'px';
+    circle.style.top = value.y + 'px';
+    log(`${title},`, 2);
+    log(value, 2);
+  }
+
+  source.subscribe(onNext,
+                    e => { log(`${title}, error: ${e}`); },
+                    () => { log(`${title}, complete`); });
+  }
+}
+ 
+//module 3.3: Sending Request with XmlHttpRequest
+function m33(){ 
+  let title = 'Sending Request with XmlHttpRequest';
+  log(`<h2>${title}</h2>`);
+
+  let button = document.getElementById('button');
+  let click = Observable.fromEvent(button, "click");
+
+  function load(url: string){
+    let xhr = new XMLHttpRequest();
+
+    xhr.addEventListener("load", () => {
+      let movies = JSON.parse(xhr.responseText);
+      movies.forEach(m => {
+        log(`<div>${m.title}</div>`);   
+      });
+    });
+
+    xhr.open("GET", url);
+    xhr.send();
+  }
+
+  click.subscribe(e => load('assets/json/movies.json'),
+                    e => { log(`${title}, error: ${e}`); },
+                    () => { log(`${title}, complete`); });
+  }
+}
+ 
+//module 3.4: Using flatMap to Process Inner Observables
+function m34(){ 
+  let title = 'Using flatMap to Process Inner Observables';
+  log(`<h2>${title}</h2>`);
+
+  let button = document.getElementById('button');
+  let click = Observable.fromEvent(button, "click");
+
+  function load(url: string){
+    return Observable.create(observer => {
+      let xhr = new XMLHttpRequest();
+
+      xhr.addEventListener("load", () => {
+        let data = JSON.parse(xhr.responseText);  
+        observer.next(data);
+        observer.complete();
+      });
+
+      xhr.open("GET", url);
+      xhr.send();
+    });   
+  }
+
+  click.flatMap(e => load('assets/json/movies.json'))
+         .subscribe((movies: Array<Object>) => { 
+                      movies.forEach(m => {
+                        log(`<div>${m.title}</div>`);   
+                      });
+                    },
+                    e => { log(`${title}, error: ${e}`); },
+                    () => { log(`${title}, complete`); });
+  }
+}
+ 
+//module 3.5: Implmenting Retry Logic with retryWhen
+function m35(){ 
+  let title = 'Implmenting Retry Logic with retryWhen';
+  log(`<h2>${title}</h2>`);
+
+  let button = document.getElementById('button');
+  let click = Observable.fromEvent(button, "click");
+
+  function load(url: string){
+    return Observable.create(observer => {
+      let xhr = new XMLHttpRequest();
+
+      xhr.addEventListener("load", () => {
+        let data = JSON.parse(xhr.responseText);  
+        observer.next(data);
+        observer.complete();
+      });
+
+      xhr.open("GET", url);
+      xhr.send();
+    });   
+  }
+
+  click.flatMap(e => load('assets/json/movies.json'))
+         .subscribe((movies: Array<Object>) => { 
+                      movies.forEach(m => {
+                        log(`<div>${m.title}</div>`);   
+                      });
+                    },
+                    e => { log(`${title}, error: ${e}`); },
+                    () => { log(`${title}, complete`); });
+  }
 }

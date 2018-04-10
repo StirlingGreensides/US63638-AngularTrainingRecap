@@ -1,4 +1,4 @@
-
-  rxjs works! 
-  <div [innerHtml]="htmlDataOuput"></div>
-
+<div id="circle" style="width: 20px; height: 20px; border-radius: 50%; background-color: red; position: absolute;"></div>
+<button id="button">Get Movies</button>
+<div [innerHtml]="htmlDataOuput | safeHtml"></div> 
+  

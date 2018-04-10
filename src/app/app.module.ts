@@ -18,6 +18,8 @@ import { AppRoutingModule } from './app-router.module';
 import { AddProductComponent } from './products/add-product/add-product.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
 
+import { SafeHtmlPipe } from './pipes/safe-html-pipe ';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,7 +29,8 @@ import { RxjsComponent } from './rxjs/rxjs.component';
     WelcomeComponent,
     PageNotFoundComponent,
     AddProductComponent,
-    RxjsComponent
+    RxjsComponent,
+    SafeHtmlPipe
   ],
   imports: [
     BrowserModule,
