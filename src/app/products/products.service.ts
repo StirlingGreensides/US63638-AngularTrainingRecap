@@ -27,11 +27,11 @@ export class ProductsService {
                     });
   }
 
-  loadProducts(): Observable<IProduct[]>{
+  loadProducts(): Observable<IProduct[]> {
     return this.getJSON();
   }
 
-  deleteProduct(productId: number): Observable<IProduct>{
+  deleteProduct(productId: number): Observable<IProduct> {
     var d = this.getJSON().map(data => d = data.filter(product => product.id === productId));
     return d;
   }
