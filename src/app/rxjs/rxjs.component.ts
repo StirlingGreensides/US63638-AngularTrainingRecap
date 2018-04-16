@@ -39,7 +39,9 @@ export class RxjsComponent implements OnInit {
         log('<br/>', 1);
         m34();
         log('<br/>', 1);
-        m35();
+        //m35(); // Triggers errors
+        log('<br/>', 1);
+        m43();
         log('<br/>', 1);
 
       }, timerVal);
@@ -57,7 +59,7 @@ export interface Movies {
 
 let htmlDataObservable: Observable<string>;
 let htmlDataObserver: Observer<string>;
-let numbers = [5, 10, 15];
+const numbers = [5, 10, 15];
 
 htmlDataObservable = new Observable((obs: Observer<string>) => {
   htmlDataObserver = obs;
@@ -274,35 +276,120 @@ function m34() {
 
 // Module 3.5: Implmenting Retry Logic with retryWhen
 function m35() {
-  // let title = 'Implmenting Retry Logic with retryWhen';
-  // log(`<h2>${title}</h2>`);
+  let title = 'Implmenting Retry Logic with retryWhen';
+  log(`<h2>${title}</h2>`);
 
-  // let button = document.getElementById('button');
-  // let click = Observable.fromEvent(button, 'click');
+  let button = document.getElementById('button');
+  let click = Observable.fromEvent(button, 'click');
 
-  // function load(url: string) {
-  //   return Observable.create(observer => {
-  //     let xhr = new XMLHttpRequest();
+  function load(url: string) {
+    return Observable.create(observer => {
+      let xhr = new XMLHttpRequest();
 
-  //     xhr.addEventListener('load', () => {
-  //       let data = JSON.parse(xhr.responseText);
-  //       observer.next(data);
-  //       observer.complete();
-  //     });
+      xhr.addEventListener('load', () => {
+        if(xhr.status === 200) {
+          let data = JSON.parse(xhr.responseText);
+          observer.next(data);
+          observer.complete();
+        }
+        else{
+          observer.error(xhr.statusText);
+        }
+      });
 
-  //     xhr.open('GET', url);
-  //     xhr.send();
-  //   });
-  // }
+      xhr.open('GET', url);
+      xhr.send();
+    }).retryWhen(retryStrategy({attempts: 3, delay: 1500}));
+  }
 
-  // click.flatMap(e => load('assets/json/movies.json'))
-  //   .subscribe((movies: Array<Object>) => {
-  //     movies.forEach(m => {
-  //       log(`<div>${m.title}</div>`);
-  //     });
-  //   },
-  //     e => { log(`${title}, error: ${e}`); },
-  //     () => { log(`${title}, complete`); });
+  function retryStrategy({attempts = 4, delay = 1000}) {
+      return function(errors) {
+        return errors
+                  .scan((acc, value) => {
+                    console.log(acc, value);
+                    return acc + 1;
+                  }, 0)
+                  .takeWhile(acc => acc < attempts)
+                  .delay(delay);
+      };
+  }
+
+  click.flatMap(e => load('assets/json/moviess.json'))
+    .subscribe((movies: Array<Movies>) => {
+        movies.forEach(m => {
+          log(`<div>${m.title}</div>`);
+        });
+      },
+      e => { log(`${title}, error: ${e}`); },
+      () => { log(`${title}, complete`); });
+}
+
+// Module 4.3: Dealing with Errors and Exceptions and unsubscribing
+function m43() {
+  let title = 'Dealing with Errors and Exceptions';
+  log(`<h2>${title}</h2>`);
+
+  let button = document.getElementById('button');
+  let click = Observable.fromEvent(button, 'click');
+
+  let source = Observable.create(observer => {
+    observer.next(1);
+    observer.next(2);
+    observer.error("Stop!");
+    //throw new Error("Stop!");
+    observer.next(3);
+    observer.complete();
+  });
+
+  source.subscribe(
+            value => log(`<div>${title}: ${value}</div>`),
+            error => log(`<div>${title} error: ${error}</div>`),
+            () => log(`<div>${title}: complete</div>`)
+        );
+
+  /*
+  function load(url: string) {
+    return Observable.create(observer => {
+      let xhr = new XMLHttpRequest();
+
+      xhr.addEventListener('load', () => {
+        if(xhr.status === 200) {
+          let data = JSON.parse(xhr.responseText);
+          observer.next(data);
+          observer.complete();
+        }
+        else{
+          observer.error(xhr.statusText);
+        }
+      });
+
+      xhr.open('GET', url);
+      xhr.send();
+    }).retryWhen(retryStrategy({attempts: 3, delay: 1500}));
+  }
+
+  function retryStrategy({attempts = 4, delay = 1000}) {
+      return function(errors) {
+        return errors
+                  .scan((acc, value) => {
+                    console.log(acc, value);
+                    return acc + 1;
+                  }, 0)
+                  .takeWhile(acc => acc < attempts)
+                  .delay(delay);
+      };
+  }
+
+  click.flatMap(e => load('assets/json/movies.json'))
+    .subscribe((movies: Array<Movies>) => {
+        movies.forEach(m => {
+          log(`<div>${m.title}</div>`);
+        });
+      },
+      e => { log(`${title}, error: ${e}`); },
+      () => { log(`${title}, complete`); }
+    );
+  */
 }
 
 
